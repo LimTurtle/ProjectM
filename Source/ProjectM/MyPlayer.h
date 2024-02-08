@@ -19,6 +19,8 @@ private:
 	class USpringArmComponent* SpringArm;
 	UPROPERTY(VisibleAnywhere)
 	class UCameraComponent* Camera;
+	UPROPERTY(VisibleAnywhere)
+	FVector MousePoint;
 
 public:
 	AMyPlayer();
@@ -33,4 +35,6 @@ public:
 	void MouseRightLeft(float value);
 
 	void Attack();
+
+	FVector GetMousePoint();
 };

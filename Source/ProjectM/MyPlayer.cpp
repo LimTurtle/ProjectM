@@ -3,8 +3,10 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "CreatureAnim.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Math/UnrealMathUtility.h"
 #include "MyPlayer.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -31,6 +33,12 @@ AMyPlayer::AMyPlayer()
 	SpringArm->SocketOffset = FVector(0.f, -200.f, 800.f);
 
 	Camera->SetRelativeRotation(FRotator(0.f, -60.f, 0.f));
+
+	static ConstructorHelpers::FClassFinder<UCreatureAnim> AnimInstance(TEXT("/Script/Engine.AnimBlueprint'/Game/Animations/ABP_PlayerAnim.ABP_PlayerAnim_C'"));
+	if (AnimInstance.Succeeded())
+	{
+		GetMesh()->SetAnimInstanceClass(AnimInstance.Class);
+	}
 }
 
 void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -51,8 +59,6 @@ void AMyPlayer::Tick(float DeltaTime)
 	FVector MouseLocation;
 	FVector MouseDirection;
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->DeprojectMousePositionToWorld(MouseLocation, MouseDirection);
-	//RotateYaw = FMath::FInterpTo(RotateYaw, 0.f, DeltaSeconds, 20.0f); // FInterp
-
 	FHitResult HitResult;
 
 	FVector Center = MouseLocation;
@@ -71,14 +77,17 @@ void AMyPlayer::Tick(float DeltaTime)
 	{
 		//DrawDebugLine(GetWorld(), Center, Forward, FColor::Green, false, 3.f);
 		FVector TargetPoint = HitResult.ImpactPoint;
+		MousePoint = TargetPoint;
 		FVector DeltaTarget = TargetPoint - GetActorLocation();
 
+		//Dynamic Camera
 		SpringArm->SocketOffset.X = FMath::FInterpTo(SpringArm->SocketOffset.X, DeltaTarget.X, DeltaTime, 3.f);
 		SpringArm->SocketOffset.Y = FMath::FInterpTo(SpringArm->SocketOffset.Y, DeltaTarget.Y, DeltaTime, 3.f);
-
+		
 		SpringArm->SocketOffset.X = FMath::Clamp(SpringArm->SocketOffset.X, -CAM_LIMIT_DIST, CAM_LIMIT_DIST);
 		SpringArm->SocketOffset.Y = FMath::Clamp(SpringArm->SocketOffset.Y, -CAM_LIMIT_DIST, CAM_LIMIT_DIST);
 	}
+
 }
 
 void AMyPlayer::KeyboardUpDown(float value)
@@ -104,4 +113,9 @@ void AMyPlayer::MouseRightLeft(float value)
 void AMyPlayer::Attack()
 {
 
+}
+
+FVector AMyPlayer::GetMousePoint()
+{
+	return MousePoint;
 }
