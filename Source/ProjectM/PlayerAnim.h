@@ -16,5 +16,6 @@ class PROJECTM_API UPlayerAnim : public UCreatureAnim
 private:
 	FRotator LookRotation;
 public:
+	virtual void NativeBeginPlay();
 	virtual void NativeUpdateAnimation(float DeltaSeconds);
 };

@@ -2,6 +2,7 @@
 
 
 #include "CreatureAnim.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "MyPlayer.h"
 
@@ -29,7 +30,7 @@ void UCreatureAnim::NativeUpdateAnimation(float DeltaSeconds)
 		IsFalling = Movement->IsFalling();
 
 		Velocity = Movement->Velocity;
-		NormVelocity = Velocity.GetSafeNormal();
+
 		if (Velocity.Size2D() > 5.f) ShouldMove = true;
 		else ShouldMove = false;
 	}

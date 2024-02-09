@@ -20,6 +20,8 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	class UCameraComponent* Camera;
 	UPROPERTY(VisibleAnywhere)
+	class USceneComponent* SceneComp;
+	UPROPERTY(VisibleAnywhere)
 	FVector MousePoint;
 
 public:
