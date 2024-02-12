@@ -6,11 +6,14 @@
 #include "Components/SceneComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "CreatureAnim.h"
+#include "Engine/SkeletalMeshSocket.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Math/UnrealMathUtility.h"
+#include "PlayerAnim.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Weapon.h"
 
 #define CAM_LIMIT_DIST 300.f
 
@@ -42,13 +45,31 @@ AMyPlayer::AMyPlayer()
 
 	SpringArm->SetRelativeLocation(FVector(0.f, 0.f, 1200.f));
 
-	Camera->SetRelativeRotation(FRotator(-40.f, 0.f, 0.f));
+	Camera->SetRelativeRotation(FRotator(-50.f, 0.f, 0.f));
 
 	static ConstructorHelpers::FClassFinder<UCreatureAnim> AnimInstance(TEXT("/Script/Engine.AnimBlueprint'/Game/Animations/ABP_PlayerAnim.ABP_PlayerAnim_C'"));
 	if (AnimInstance.Succeeded())
 	{
 		GetMesh()->SetAnimInstanceClass(AnimInstance.Class);
 	}
+
+}
+
+void AMyPlayer::BeginPlay()
+{
+	Super::BeginPlay();
+
+	auto Weapon = GetWorld()->SpawnActor<AWeapon>(AWeapon::StaticClass(), GetActorLocation(), GetActorRotation());
+	if (IsValid(Weapon))
+	{
+		auto WeaponSocket = GetMesh()->GetSocketByName(TEXT("WeaponSocket"));
+		if (WeaponSocket)
+		{
+			WeaponSocket->AttachActor(Weapon, GetMesh());
+		}
+	}
+
+	AnimIns = Cast<UPlayerAnim>(GetMesh()->GetAnimInstance());
 }
 
 void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -89,14 +110,17 @@ void AMyPlayer::Tick(float DeltaTime)
 		//DrawDebugLine(GetWorld(), Center, Forward, FColor::Green, false, 3.f);
 		FVector TargetPoint = HitResult.ImpactPoint;
 		MousePoint = TargetPoint;
-		FVector DeltaTarget = TargetPoint - GetActorLocation();
+		FVector DeltaTarget = TargetPoint - GetCapsuleComponent()->GetComponentLocation();
 
-		//Dynamic Camera
-		//SpringArm->SocketOffset.X = FMath::FInterpTo(SpringArm->SocketOffset.X, DeltaTarget.X, DeltaTime, 3.f);
-		//SpringArm->SocketOffset.Y = FMath::FInterpTo(SpringArm->SocketOffset.Y, DeltaTarget.Y, DeltaTime, 3.f);
-		//
-		//SpringArm->SocketOffset.X = FMath::Clamp(SpringArm->SocketOffset.X, -CAM_LIMIT_DIST, CAM_LIMIT_DIST);
-		//SpringArm->SocketOffset.Y = FMath::Clamp(SpringArm->SocketOffset.Y, -CAM_LIMIT_DIST, CAM_LIMIT_DIST);
+		if (DeltaTarget.Size2D() > 100.f)
+		{
+			//Dynamic Camera
+			SpringArm->SocketOffset.X = FMath::FInterpTo(SpringArm->SocketOffset.X, DeltaTarget.X, DeltaTime, 3.f);
+			SpringArm->SocketOffset.Y = FMath::FInterpTo(SpringArm->SocketOffset.Y, DeltaTarget.Y, DeltaTime, 3.f);
+
+			SpringArm->SocketOffset.X = FMath::Clamp(SpringArm->SocketOffset.X, -CAM_LIMIT_DIST, CAM_LIMIT_DIST - 50.f);
+			SpringArm->SocketOffset.Y = FMath::Clamp(SpringArm->SocketOffset.Y, -CAM_LIMIT_DIST, CAM_LIMIT_DIST);
+		}
 	}
 
 	FVector CharacterLocation = GetCapsuleComponent()->GetComponentLocation() + FVector(-500.f, 0.f, 900.f);
@@ -126,7 +150,10 @@ void AMyPlayer::MouseRightLeft(float value)
 
 void AMyPlayer::Attack()
 {
-
+	if (IsValid(AnimIns))
+	{
+		AnimIns->PlayAttackMontage();
+	}
 }
 
 FVector AMyPlayer::GetMousePoint()

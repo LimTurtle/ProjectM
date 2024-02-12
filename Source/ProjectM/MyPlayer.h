@@ -22,12 +22,15 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	class USceneComponent* SceneComp;
 	UPROPERTY(VisibleAnywhere)
+	class UPlayerAnim* AnimIns;
+	UPROPERTY(VisibleAnywhere)
 	FVector MousePoint;
 
 public:
 	AMyPlayer();
 
 public:
+	virtual void BeginPlay() override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	virtual void Tick(float DeltaTime) override;
 

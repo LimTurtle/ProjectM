@@ -14,8 +14,15 @@ class PROJECTM_API UPlayerAnim : public UCreatureAnim
 {
 	GENERATED_BODY()
 private:
+	UPROPERTY(VisibleAnywhere)
 	FRotator LookRotation;
+	UPROPERTY(Category = "Animation", VisibleAnywhere)
+	UAnimMontage* AttackMontage;
 public:
+	UPlayerAnim();
+
 	virtual void NativeBeginPlay();
 	virtual void NativeUpdateAnimation(float DeltaSeconds);
+
+	void PlayAttackMontage();
 };
