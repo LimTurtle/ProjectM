@@ -7,6 +7,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "CreatureAnim.h"
 #include "Engine/SkeletalMeshSocket.h"
+#include "Fireball.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -153,6 +154,10 @@ void AMyPlayer::Attack()
 	if (IsValid(AnimIns))
 	{
 		AnimIns->PlayAttackMontage();
+
+		auto Fireball = GetWorld()->SpawnActor<AFireball>(AFireball::StaticClass(), 
+			GetCapsuleComponent()->GetComponentLocation() + (GetCapsuleComponent()->GetForwardVector()) * 100.f,
+			GetCapsuleComponent()->GetComponentRotation());
 	}
 }
 
