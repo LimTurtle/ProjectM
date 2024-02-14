@@ -151,7 +151,7 @@ void AMyPlayer::MouseRightLeft(float value)
 
 void AMyPlayer::Attack()
 {
-	if (IsValid(AnimIns))
+	if (IsValid(AnimIns) && !AnimIns->GetIsAttacking())
 	{
 		AnimIns->PlayAttackMontage();
 

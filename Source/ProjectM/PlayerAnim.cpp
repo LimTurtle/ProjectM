@@ -23,6 +23,8 @@ void UPlayerAnim::NativeBeginPlay()
 	{
 		Movement->bOrientRotationToMovement = false;
 	}
+
+	OnMontageEnded.AddDynamic(this, &UPlayerAnim::OnAttackMontageEnded);
 }
 
 void UPlayerAnim::NativeUpdateAnimation(float DeltaSeconds)
@@ -52,6 +54,17 @@ void UPlayerAnim::PlayAttackMontage()
 		if (!Montage_IsPlaying(AttackMontage))
 		{
 			Montage_Play(AttackMontage);
+			IsAttacking = true;
 		}
 	}
+}
+
+void UPlayerAnim::OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted)
+{
+	IsAttacking = false;
+}
+
+bool UPlayerAnim::GetIsAttacking()
+{
+	return IsAttacking;
 }

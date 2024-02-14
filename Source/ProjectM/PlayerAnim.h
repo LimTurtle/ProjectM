@@ -18,6 +18,8 @@ private:
 	FRotator LookRotation;
 	UPROPERTY(Category = "Animation", VisibleAnywhere)
 	UAnimMontage* AttackMontage;
+	UPROPERTY(Category = "Animation", VisibleAnywhere)
+	bool IsAttacking = false;
 public:
 	UPlayerAnim();
 
@@ -25,4 +27,8 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds);
 
 	void PlayAttackMontage();
+
+	UFUNCTION()
+	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);
+	bool GetIsAttacking();
 };
