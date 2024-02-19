@@ -16,8 +16,6 @@ class PROJECTM_API UCreatureAnim : public UAnimInstance
 	
 protected:
 	UPROPERTY(Category = "Animation", EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
-	class AMyPlayer* Character;
-	UPROPERTY(Category = "Animation", EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	FVector Velocity;
 	UPROPERTY(Category = "Animation", EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	FVector NormVelocity;

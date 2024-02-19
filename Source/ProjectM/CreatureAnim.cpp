@@ -10,15 +10,6 @@ void UCreatureAnim::NativeBeginPlay()
 {
 	Super::NativeBeginPlay();
 
-	auto Pawn = TryGetPawnOwner();
-	if (IsValid(Pawn))
-	{
-		Character = Cast<AMyPlayer>(Pawn);
-		if (IsValid(Character))
-		{
-			Movement = Character->GetCharacterMovement();
-		}
-	}
 }
 
 void UCreatureAnim::NativeUpdateAnimation(float DeltaSeconds)

@@ -14,6 +14,8 @@ class PROJECTM_API UPlayerAnim : public UCreatureAnim
 {
 	GENERATED_BODY()
 private:
+	UPROPERTY(Category = "Animation", EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	class AMyPlayer* Character;
 	UPROPERTY(VisibleAnywhere)
 	FRotator LookRotation;
 	UPROPERTY(Category = "Animation", VisibleAnywhere)

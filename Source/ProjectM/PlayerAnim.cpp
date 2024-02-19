@@ -19,6 +19,16 @@ void UPlayerAnim::NativeBeginPlay()
 {
 	Super::NativeBeginPlay();
 
+	auto Pawn = TryGetPawnOwner();
+	if (IsValid(Pawn))
+	{
+		Character = Cast<AMyPlayer>(Pawn);
+		if (IsValid(Character))
+		{
+			Movement = Character->GetCharacterMovement();
+		}
+	}
+	
 	if (IsValid(Movement))
 	{
 		Movement->bOrientRotationToMovement = false;
@@ -38,12 +48,9 @@ void UPlayerAnim::NativeUpdateAnimation(float DeltaSeconds)
 		//CharacterRotation.Yaw = FMath::FInterpTo(CharacterRotation.Yaw, LookRotation.Yaw, DeltaSeconds, 50.f);
 		CharacterRotation.Yaw = LookRotation.Yaw;
 		Character->GetCapsuleComponent()->SetWorldRotation(CharacterRotation);
-		
-		if (Velocity != FVector::ZeroVector)
-		{
-			FVector UnrotatedVector = Character->GetCapsuleComponent()->GetComponentRotation().UnrotateVector(Velocity);
-			NormVelocity = UnrotatedVector.GetSafeNormal();
-		}
+
+		FVector UnrotatedVector = Character->GetCapsuleComponent()->GetComponentRotation().UnrotateVector(Velocity);
+		NormVelocity = UnrotatedVector.GetSafeNormal();
 	}
 }
 
