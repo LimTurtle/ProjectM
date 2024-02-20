@@ -14,10 +14,19 @@ class PROJECTM_API UEnemyAnim : public UCreatureAnim
 {
 	GENERATED_BODY()
 	
-public:
+private:
 	UPROPERTY(Category = "Animation", EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	class AMyEnemy* Character;
+	UPROPERTY(Category = "Animation", VisibleAnywhere)
+	UAnimMontage* NearAttackMontage;
+	UPROPERTY(Category = "Animation", VisibleAnywhere)
+	UAnimMontage* FarAttackMontage;
+
+public:
+	UEnemyAnim();
 
 	virtual void NativeBeginPlay();
 	virtual void NativeUpdateAnimation(float DeltaSeconds);
+
+	void PlayNearAttackMontage();
 };

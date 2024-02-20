@@ -7,6 +7,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "CreatureAnim.h"
 #include "EnemyAIController.h"
+#include "EnemyAnim.h"
 #include "Materials/MaterialInterface.h"
 
 AMyEnemy::AMyEnemy()
@@ -33,4 +34,19 @@ AMyEnemy::AMyEnemy()
 	}
 
 	AIControllerClass = AEnemyAIController::StaticClass();
+}
+
+void AMyEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+
+	AnimIns = Cast<UEnemyAnim>(GetMesh()->GetAnimInstance());
+}
+
+void AMyEnemy::NearAttack()
+{
+	if (IsValid(AnimIns))
+	{
+		AnimIns->PlayNearAttackMontage();
+	}
 }

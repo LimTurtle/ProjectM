@@ -2,7 +2,17 @@
 
 
 #include "EnemyAnim.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "MyEnemy.h"
+
+UEnemyAnim::UEnemyAnim()
+{
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> NAM(TEXT("/Script/Engine.AnimMontage'/Game/Animations/AM_EnemyNearAttack.AM_EnemyNearAttack'"));
+	if (NAM.Succeeded())
+	{
+		NearAttackMontage = NAM.Object;
+	}
+}
 
 void UEnemyAnim::NativeBeginPlay()
 {
@@ -15,6 +25,8 @@ void UEnemyAnim::NativeBeginPlay()
 		if (IsValid(Character))
 		{
 			Movement = Character->GetCharacterMovement();
+
+			Character->bUseControllerRotationYaw = true;
 		}
 	}
 }
@@ -27,5 +39,16 @@ void UEnemyAnim::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		FVector UnrotatedVector = Character->GetActorRotation().UnrotateVector(Velocity);
 		NormVelocity = UnrotatedVector.GetSafeNormal();
+	}
+}
+
+void UEnemyAnim::PlayNearAttackMontage()
+{
+	if (IsValid(Character))
+	{
+		if (!IsAnyMontagePlaying())
+		{
+			Montage_Play(NearAttackMontage);
+		}
 	}
 }

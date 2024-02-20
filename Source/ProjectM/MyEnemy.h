@@ -14,6 +14,14 @@ class PROJECTM_API AMyEnemy : public ACreature
 {
 	GENERATED_BODY()
 	
+private:
+	UPROPERTY(VisibleAnywhere)
+	class UEnemyAnim* AnimIns;
+
 public:
 	AMyEnemy();
+
+	virtual void BeginPlay() override;
+
+	void NearAttack();
 };
