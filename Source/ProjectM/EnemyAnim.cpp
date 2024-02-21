@@ -25,8 +25,10 @@ void UEnemyAnim::NativeBeginPlay()
 		if (IsValid(Character))
 		{
 			Movement = Character->GetCharacterMovement();
+			Movement->bUseControllerDesiredRotation = true;
+			Movement->bOrientRotationToMovement = false;
 
-			Character->bUseControllerRotationYaw = true;
+			Character->bUseControllerRotationYaw = false;
 		}
 	}
 }

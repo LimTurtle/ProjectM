@@ -8,6 +8,7 @@
 #include "CreatureAnim.h"
 #include "Engine/SkeletalMeshSocket.h"
 #include "Fireball.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -28,13 +29,12 @@ AMyPlayer::AMyPlayer()
 		GetMesh()->SetRelativeLocationAndRotation(FVector(0.f, 0.f, -90.f), FRotator(0.f, -90.f, 0.f));
 	}
 
-	SceneComp = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComp"));
-	RootComponent = SceneComp;
+	//RootComponent = SceneComp;
 
 	GetCapsuleComponent()->SetupAttachment(RootComponent);
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	SpringArm->SetupAttachment(RootComponent);
+	//SpringArm->SetupAttachment(RootComponent);
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
@@ -113,12 +113,13 @@ void AMyPlayer::Tick(float DeltaTime)
 		MousePoint = TargetPoint;
 		FVector DeltaTarget = TargetPoint - GetCapsuleComponent()->GetComponentLocation();
 
+		UE_LOG(LogTemp, Log, TEXT("%f / %f"), GetActorLocation().X, GetActorLocation().Y);
 		if (DeltaTarget.Size2D() > 100.f)
 		{
 			//Dynamic Camera
 			SpringArm->SocketOffset.X = FMath::FInterpTo(SpringArm->SocketOffset.X, DeltaTarget.X, DeltaTime, 3.f);
 			SpringArm->SocketOffset.Y = FMath::FInterpTo(SpringArm->SocketOffset.Y, DeltaTarget.Y, DeltaTime, 3.f);
-
+		
 			SpringArm->SocketOffset.X = FMath::Clamp(SpringArm->SocketOffset.X, -CAM_LIMIT_DIST, CAM_LIMIT_DIST - 50.f);
 			SpringArm->SocketOffset.Y = FMath::Clamp(SpringArm->SocketOffset.Y, -CAM_LIMIT_DIST, CAM_LIMIT_DIST);
 		}
