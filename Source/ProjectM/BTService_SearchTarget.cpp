@@ -4,6 +4,7 @@
 #include "BTService_SearchTarget.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "EnemyAIController.h"
+#include "MyEnemy.h"
 #include "MyPlayer.h"
 
 UBTService_SearchTarget::UBTService_SearchTarget()
@@ -43,6 +44,8 @@ void UBTService_SearchTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8*
 					UE_LOG(LogTemp, Log, TEXT("%f / %f"), Target->GetActorLocation().X, Target->GetActorLocation().Y);
 					DrawDebugSphere(GetWorld(), Center, SearchDistance, 10, FColor::Green);
 					OwnerComp.GetBlackboardComponent()->SetValueAsObject(FName("Target"), Target);
+					auto curCharacter = Cast<AMyEnemy>(CurPawn);
+					curCharacter->SetAttackTarget(Target);
 					return;
 				}
 				else

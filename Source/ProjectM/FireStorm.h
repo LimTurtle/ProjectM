@@ -11,7 +11,7 @@ class PROJECTM_API AFireStorm : public AActor
 {
 	GENERATED_BODY()
 private:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	class UParticleSystemComponent* ParticleSystem;
 	UPROPERTY(VisibleAnywhere)
 	class USceneComponent* DefaultRoot;

@@ -113,7 +113,6 @@ void AMyPlayer::Tick(float DeltaTime)
 		MousePoint = TargetPoint;
 		FVector DeltaTarget = TargetPoint - GetCapsuleComponent()->GetComponentLocation();
 
-		UE_LOG(LogTemp, Log, TEXT("%f / %f"), GetActorLocation().X, GetActorLocation().Y);
 		if (DeltaTarget.Size2D() > 100.f)
 		{
 			//Dynamic Camera

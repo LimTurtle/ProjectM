@@ -31,7 +31,7 @@ AFireStorm::AFireStorm()
 void AFireStorm::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame

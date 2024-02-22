@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "MyEnemy.h"
 
 #include "Components/CapsuleComponent.h"
@@ -8,6 +7,7 @@
 #include "CreatureAnim.h"
 #include "EnemyAIController.h"
 #include "EnemyAnim.h"
+#include "FireStorm.h"
 #include "Materials/MaterialInterface.h"
 
 AMyEnemy::AMyEnemy()
@@ -34,6 +34,12 @@ AMyEnemy::AMyEnemy()
 	}
 
 	AIControllerClass = AEnemyAIController::StaticClass();
+
+	static ConstructorHelpers::FObjectFinder<UBlueprint> FS(TEXT("/Script/Engine.Blueprint'/Game/Blueprints/BP_FireStorm.BP_FireStorm'"));
+	if (FS.Succeeded())
+	{
+		FireStorm = (UClass*)FS.Object->GeneratedClass;
+	}
 }
 
 void AMyEnemy::BeginPlay()
@@ -43,10 +49,20 @@ void AMyEnemy::BeginPlay()
 	AnimIns = Cast<UEnemyAnim>(GetMesh()->GetAnimInstance());
 }
 
+void AMyEnemy::SetAttackTarget(AActor* target)
+{
+	AttackTarget = target;
+}
+
 void AMyEnemy::NearAttack()
 {
 	if (IsValid(AnimIns))
 	{
 		AnimIns->PlayNearAttackMontage();
+
+		if (IsValid(AttackTarget))
+		{
+			GetWorld()->SpawnActor<AFireStorm>(FireStorm, AttackTarget->GetActorLocation(), FRotator::ZeroRotator);
+		}
 	}
 }

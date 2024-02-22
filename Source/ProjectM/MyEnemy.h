@@ -17,11 +17,16 @@ class PROJECTM_API AMyEnemy : public ACreature
 private:
 	UPROPERTY(VisibleAnywhere)
 	class UEnemyAnim* AnimIns;
+	UPROPERTY(VisibleAnywhere)
+	AActor* AttackTarget;
+	UPROPERTY(VisibleAnywhere)
+	UClass* FireStorm;
 
 public:
 	AMyEnemy();
 
 	virtual void BeginPlay() override;
 
+	void SetAttackTarget(AActor* target);
 	void NearAttack();
 };
