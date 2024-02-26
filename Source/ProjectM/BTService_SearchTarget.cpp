@@ -41,7 +41,7 @@ void UBTService_SearchTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8*
 				auto Target = Cast<AMyPlayer>(Res.GetActor());
 				if (IsValid(Target))
 				{
-					UE_LOG(LogTemp, Log, TEXT("%f / %f"), Target->GetActorLocation().X, Target->GetActorLocation().Y);
+					//UE_LOG(LogTemp, Log, TEXT("%f / %f"), Target->GetActorLocation().X, Target->GetActorLocation().Y);
 					DrawDebugSphere(GetWorld(), Center, SearchDistance, 10, FColor::Green);
 					OwnerComp.GetBlackboardComponent()->SetValueAsObject(FName("Target"), Target);
 					auto curCharacter = Cast<AMyEnemy>(CurPawn);

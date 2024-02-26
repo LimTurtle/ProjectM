@@ -13,6 +13,8 @@ class PROJECTM_API AFireStorm : public AActor
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	class UParticleSystemComponent* ParticleSystem;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	class UCapsuleComponent* CapsuleComp;
 	UPROPERTY(VisibleAnywhere)
 	class USceneComponent* DefaultRoot;
 public:	
@@ -26,5 +28,8 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	UFUNCTION()
+	void OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	void ActorActive();
 };

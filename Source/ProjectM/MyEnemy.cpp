@@ -62,7 +62,11 @@ void AMyEnemy::NearAttack()
 
 		if (IsValid(AttackTarget))
 		{
-			GetWorld()->SpawnActor<AFireStorm>(FireStorm, AttackTarget->GetActorLocation(), FRotator::ZeroRotator);
+			FVector TargetLoc = AttackTarget->GetActorLocation();
+			TargetLoc.Z = 0.f;
+			GetWorld()->SpawnActor<AFireStorm>(FireStorm, TargetLoc, FRotator::ZeroRotator);
+			//UE_LOG(LogTemp, Log, TEXT("%f / %f"), TargetLoc.X, TargetLoc.Y);
+			//GetWorld()->SpawnActor<AFireStorm>(AFireStorm::StaticClass(), AttackTarget->GetActorLocation(), FRotator::ZeroRotator);
 		}
 	}
 }
