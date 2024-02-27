@@ -62,7 +62,7 @@ void AFireStorm::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
 	if (OtherActor && OtherActor != this && OtherComp)
 	{
 		CapsuleComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-		UE_LOG(LogTemp, Log, TEXT("OverlapBegin"));
+		//UE_LOG(LogTemp, Log, TEXT("OverlapBegin"));
 		UGameplayStatics::ApplyDamage(OtherActor, 10.f, nullptr, nullptr, NULL);
 	}
 }

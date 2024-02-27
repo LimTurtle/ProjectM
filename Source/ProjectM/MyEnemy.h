@@ -35,5 +35,13 @@ public:
 	void SetAttackTarget(AActor* target);
 	void NearAttack();
 
+	virtual float TakeDamage
+	(
+		float DamageAmount,
+		struct FDamageEvent const& DamageEvent,
+		class AController* EventInstigator,
+		AActor* DamageCauser
+	) override;
+
 	FOnEnemyHpChanged OnEnemyHpChanged;
 };

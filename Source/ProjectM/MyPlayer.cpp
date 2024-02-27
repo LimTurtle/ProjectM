@@ -81,7 +81,6 @@ void AMyPlayer::BeginPlay()
 		HpBar = Cast<UHpBarWidget>(Gamemode->CurrentWidget);
 		if (HpBar)
 		{
-			Hp = 30.f;
 			HpBar->BindPlayerHp(this);
 		}
 	}
@@ -173,6 +172,14 @@ void AMyPlayer::Attack()
 			GetCapsuleComponent()->GetComponentLocation() + (GetCapsuleComponent()->GetForwardVector()) * 100.f,
 			GetCapsuleComponent()->GetComponentRotation());
 	}
+}
+
+float AMyPlayer::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	Hp = Hp - DamageAmount;
+	if (Hp < 0.f) Hp = 0.f;
+	OnPlayerHpChanged.Broadcast();
+	return DamageAmount;
 }
 
 FVector AMyPlayer::GetMousePoint()

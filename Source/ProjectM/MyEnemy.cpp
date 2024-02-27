@@ -2,11 +2,13 @@
 
 #include "MyEnemy.h"
 
+#include "BossWeapon.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "CreatureAnim.h"
 #include "EnemyAIController.h"
 #include "EnemyAnim.h"
+#include "Engine/SkeletalMeshSocket.h"
 #include "FireStorm.h"
 #include "Kismet/GameplayStatics.h"
 #include "Materials/MaterialInterface.h"
@@ -50,6 +52,16 @@ void AMyEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 
+	auto Weapon = GetWorld()->SpawnActor<ABossWeapon>(ABossWeapon::StaticClass(), GetActorLocation(), GetActorRotation());
+	if (IsValid(Weapon))
+	{
+		auto WeaponSocket = GetMesh()->GetSocketByName(TEXT("WeaponSocket"));
+		if (WeaponSocket)
+		{
+			WeaponSocket->AttachActor(Weapon, GetMesh());
+		}
+	}
+
 	AnimIns = Cast<UEnemyAnim>(GetMesh()->GetAnimInstance());
 
 	auto Gamemode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
@@ -58,7 +70,6 @@ void AMyEnemy::BeginPlay()
 		HpBar = Cast<UHpBarWidget>(Gamemode->CurrentWidget);
 		if (HpBar)
 		{
-			Hp = 90.f;
 			HpBar->BindEnemyHp(this);
 		}
 	}
@@ -84,4 +95,12 @@ void AMyEnemy::NearAttack()
 			//GetWorld()->SpawnActor<AFireStorm>(AFireStorm::StaticClass(), AttackTarget->GetActorLocation(), FRotator::ZeroRotator);
 		}
 	}
+}
+
+float AMyEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	Hp = Hp - DamageAmount;
+	if (Hp < 0.f) Hp = 0.f;
+	OnEnemyHpChanged.Broadcast();
+	return DamageAmount;
 }

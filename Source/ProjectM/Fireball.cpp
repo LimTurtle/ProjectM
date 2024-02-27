@@ -77,6 +77,7 @@ void AFireball::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Othe
 		{
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ParticleSystem, CollisionMesh->GetComponentLocation());
 		}
+		UGameplayStatics::ApplyDamage(OtherActor, 10.f, ProjectileComponent->GetOwner()->GetInstigatorController(), nullptr, NULL);
 		Destroy();
 	}
 }
