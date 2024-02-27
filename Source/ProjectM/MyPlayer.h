@@ -9,6 +9,8 @@
 /**
  * 
  */
+DECLARE_MULTICAST_DELEGATE(FOnPlayerHpChanged)
+
 UCLASS()
 class PROJECTM_API AMyPlayer : public ACreature
 {
@@ -23,6 +25,8 @@ private:
 	class USceneComponent* SceneComp;
 	UPROPERTY(VisibleAnywhere)
 	class UPlayerAnim* AnimIns;
+	UPROPERTY(VisibleAnywhere)
+	class UHpBarWidget* HpBar;
 	UPROPERTY(VisibleAnywhere)
 	FVector MousePoint;
 
@@ -42,4 +46,6 @@ public:
 	void Attack();
 
 	FVector GetMousePoint();
+
+	FOnPlayerHpChanged OnPlayerHpChanged;
 };

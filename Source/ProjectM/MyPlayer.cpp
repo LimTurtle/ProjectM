@@ -13,6 +13,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Math/UnrealMathUtility.h"
+#include "MyGameModeBase.h"
+#include "HpBarWidget.h"
 #include "PlayerAnim.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Weapon.h"
@@ -71,6 +73,18 @@ void AMyPlayer::BeginPlay()
 	}
 
 	AnimIns = Cast<UPlayerAnim>(GetMesh()->GetAnimInstance());
+
+	//auto HpWidget = Cast<UHpBarWidget>()
+	auto Gamemode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (Gamemode)
+	{
+		HpBar = Cast<UHpBarWidget>(Gamemode->CurrentWidget);
+		if (HpBar)
+		{
+			Hp = 30.f;
+			HpBar->BindPlayerHp(this);
+		}
+	}
 }
 
 void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

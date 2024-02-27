@@ -32,3 +32,8 @@ void ACreature::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+float ACreature::GetHpRatio()
+{
+	return Hp / MaxHp;
+}
+

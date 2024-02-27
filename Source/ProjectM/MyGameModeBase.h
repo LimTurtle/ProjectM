@@ -15,5 +15,10 @@ class PROJECTM_API AMyGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 	
 public:
+	UPROPERTY()
+	TSubclassOf<UUserWidget> HUD_Class;
+	UPROPERTY()
+	UUserWidget* CurrentWidget;
+
 	AMyGameModeBase();
 };

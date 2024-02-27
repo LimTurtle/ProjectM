@@ -2,6 +2,7 @@
 
 #include "MyGameModeBase.h"
 #include "MyPlayer.h"
+#include "HpBarWidget.h"
 
 
 AMyGameModeBase::AMyGameModeBase()
@@ -11,5 +12,16 @@ AMyGameModeBase::AMyGameModeBase()
 	if (MP.Succeeded())
 	{
 		DefaultPawnClass = MP.Class;
+	}
+
+	static ConstructorHelpers::FClassFinder<UHpBarWidget> HBW(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/UI/WBP_HpBar.WBP_HpBar_C'"));
+	if (HBW.Succeeded())
+	{
+		HUD_Class = HBW.Class;
+		CurrentWidget = CreateWidget(GetWorld(), HUD_Class);
+		if (CurrentWidget)
+		{
+			CurrentWidget->AddToViewport();
+		}
 	}
 }

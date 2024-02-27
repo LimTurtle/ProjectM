@@ -11,6 +11,12 @@ class PROJECTM_API ACreature : public ACharacter
 {
 	GENERATED_BODY()
 
+protected:
+	UPROPERTY()
+	float MaxHp = 100.f;
+	UPROPERTY()
+	float Hp = 100.f;
+
 public:
 	// Sets default values for this character's properties
 	ACreature();
@@ -26,4 +32,5 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	float GetHpRatio();
 };

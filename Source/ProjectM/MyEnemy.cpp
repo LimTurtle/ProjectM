@@ -8,7 +8,10 @@
 #include "EnemyAIController.h"
 #include "EnemyAnim.h"
 #include "FireStorm.h"
+#include "Kismet/GameplayStatics.h"
 #include "Materials/MaterialInterface.h"
+#include "MyGameModeBase.h"
+#include "HpBarWidget.h"
 
 AMyEnemy::AMyEnemy()
 {
@@ -40,6 +43,7 @@ AMyEnemy::AMyEnemy()
 	{
 		FireStorm = (UClass*)FS.Object->GeneratedClass;
 	}
+
 }
 
 void AMyEnemy::BeginPlay()
@@ -47,6 +51,17 @@ void AMyEnemy::BeginPlay()
 	Super::BeginPlay();
 
 	AnimIns = Cast<UEnemyAnim>(GetMesh()->GetAnimInstance());
+
+	auto Gamemode = Cast<AMyGameModeBase>(UGameplayStatics::GetGameMode(GetWorld()));
+	if (Gamemode)
+	{
+		HpBar = Cast<UHpBarWidget>(Gamemode->CurrentWidget);
+		if (HpBar)
+		{
+			Hp = 90.f;
+			HpBar->BindEnemyHp(this);
+		}
+	}
 }
 
 void AMyEnemy::SetAttackTarget(AActor* target)

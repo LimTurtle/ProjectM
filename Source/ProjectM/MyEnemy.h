@@ -9,6 +9,9 @@
 /**
  * 
  */
+
+DECLARE_MULTICAST_DELEGATE(FOnEnemyHpChanged)
+
 UCLASS()
 class PROJECTM_API AMyEnemy : public ACreature
 {
@@ -21,6 +24,8 @@ private:
 	AActor* AttackTarget;
 	UPROPERTY(VisibleAnywhere)
 	UClass* FireStorm;
+	UPROPERTY(VisibleAnywhere)
+	class UHpBarWidget* HpBar;
 
 public:
 	AMyEnemy();
@@ -29,4 +34,6 @@ public:
 
 	void SetAttackTarget(AActor* target);
 	void NearAttack();
+
+	FOnEnemyHpChanged OnEnemyHpChanged;
 };
