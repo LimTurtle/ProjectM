@@ -13,6 +13,12 @@ UPlayerAnim::UPlayerAnim()
 	{
 		AttackMontage = AM.Object;
 	}
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> DM(TEXT("/Script/Engine.AnimMontage'/Game/Animations/AM_Dead.AM_Dead'"));
+	if (DM.Succeeded())
+	{
+		DeadMontage = DM.Object;
+	}
 }
 
 void UPlayerAnim::NativeBeginPlay()
@@ -63,6 +69,22 @@ void UPlayerAnim::PlayAttackMontage()
 			Montage_Play(AttackMontage);
 			IsAttacking = true;
 		}
+	}
+}
+
+void UPlayerAnim::PlayDeadMontage()
+{
+	if (IsValid(DeadMontage) && IsDead == false)
+	{
+		UE_LOG(LogTemp, Log, TEXT("Dead"));
+		//Montage_Stop(0.f);
+		IsDead = true;
+		//Montage_Play(DeadMontage);
+		DeadMontage->bEnableAutoBlendOut = false;
+		float LastFrame = Montage_Play(DeadMontage);
+		//FTimerHandle TimerHandle;
+		//GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]() {Montage_Play(DeadMontage, 0.f, EMontagePlayReturnType::MontageLength, LastFrame); }, LastFrame, false);
+		
 	}
 }
 

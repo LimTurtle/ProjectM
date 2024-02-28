@@ -21,7 +21,10 @@ private:
 	UPROPERTY(Category = "Animation", VisibleAnywhere)
 	UAnimMontage* AttackMontage;
 	UPROPERTY(Category = "Animation", VisibleAnywhere)
+	UAnimMontage* DeadMontage;
+	UPROPERTY(Category = "Animation", VisibleAnywhere)
 	bool IsAttacking = false;
+
 public:
 	UPlayerAnim();
 
@@ -29,6 +32,7 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds);
 
 	void PlayAttackMontage();
+	void PlayDeadMontage();
 
 	UFUNCTION()
 	void OnAttackMontageEnded(UAnimMontage* Montage, bool bInterrupted);

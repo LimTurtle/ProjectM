@@ -23,6 +23,8 @@ protected:
 	bool IsFalling = false;
 	UPROPERTY(Category = "Animation", EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
 	bool ShouldMove = false;
+	UPROPERTY(Category = "Animation", EditAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = true))
+	bool IsDead = false;
 	UPROPERTY(VisibleAnywhere)
 	class UCharacterMovementComponent* Movement;
 

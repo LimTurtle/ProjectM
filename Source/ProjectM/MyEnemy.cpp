@@ -14,6 +14,7 @@
 #include "Materials/MaterialInterface.h"
 #include "MyGameModeBase.h"
 #include "HpBarWidget.h"
+#include "Waterball.h"
 
 AMyEnemy::AMyEnemy()
 {
@@ -105,9 +106,11 @@ void AMyEnemy::FarAttack()
 
 		if (IsValid(AttackTarget))
 		{
-			FVector TargetLoc = AttackTarget->GetActorLocation();
-			TargetLoc.Z = 0.f;
-			GetWorld()->SpawnActor<AFireStorm>(FireStorm, TargetLoc, FRotator::ZeroRotator);
+			FVector SpawnPos = GetActorLocation();
+			SpawnPos.Z -= 100.f;
+			auto Waterball = GetWorld()->SpawnActor<AWaterball>(AWaterball::StaticClass(),
+				SpawnPos + GetActorForwardVector() * 200.f,
+				GetActorRotation());
 		}
 	}
 }

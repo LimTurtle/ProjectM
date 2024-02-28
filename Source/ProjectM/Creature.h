@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "Creature.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnDead)
+
 UCLASS()
 class PROJECTM_API ACreature : public ACharacter
 {
@@ -33,4 +35,6 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	float GetHpRatio();
+
+	FOnDead OnDead;
 };

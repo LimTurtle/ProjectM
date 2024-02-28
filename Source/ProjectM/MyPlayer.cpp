@@ -56,6 +56,7 @@ AMyPlayer::AMyPlayer()
 		GetMesh()->SetAnimInstanceClass(AnimInstance.Class);
 	}
 
+	OnDead.AddUObject(this, &AMyPlayer::CreatureDead);
 }
 
 void AMyPlayer::BeginPlay()
@@ -81,9 +82,11 @@ void AMyPlayer::BeginPlay()
 		HpBar = Cast<UHpBarWidget>(Gamemode->CurrentWidget);
 		if (HpBar)
 		{
+			Hp = 20.f;
 			HpBar->BindPlayerHp(this);
 		}
 	}
+
 }
 
 void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -174,10 +177,25 @@ void AMyPlayer::Attack()
 	}
 }
 
+void AMyPlayer::CreatureDead()
+{
+	if (IsValid(AnimIns))
+	{
+		AnimIns->PlayDeadMontage();
+		FTimerHandle TimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]() {Destroy(); }, 2.f, false);
+	}
+}
+
 float AMyPlayer::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	Hp = Hp - DamageAmount;
-	if (Hp < 0.f) Hp = 0.f;
+	if (Hp <= 0.f)
+	{
+		Hp = 0.f;
+		OnDead.Broadcast();
+	}
+
 	OnPlayerHpChanged.Broadcast();
 	return DamageAmount;
 }

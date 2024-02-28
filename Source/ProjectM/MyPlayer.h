@@ -44,7 +44,7 @@ public:
 	void MouseRightLeft(float value);
 
 	void Attack();
-
+	void CreatureDead();
 	virtual float TakeDamage
 	(
 		float DamageAmount,
