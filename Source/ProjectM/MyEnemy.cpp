@@ -97,6 +97,21 @@ void AMyEnemy::NearAttack()
 	}
 }
 
+void AMyEnemy::FarAttack()
+{
+	if (IsValid(AnimIns))
+	{
+		AnimIns->PlayFarAttackMontage();
+
+		if (IsValid(AttackTarget))
+		{
+			FVector TargetLoc = AttackTarget->GetActorLocation();
+			TargetLoc.Z = 0.f;
+			GetWorld()->SpawnActor<AFireStorm>(FireStorm, TargetLoc, FRotator::ZeroRotator);
+		}
+	}
+}
+
 float AMyEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	Hp = Hp - DamageAmount;

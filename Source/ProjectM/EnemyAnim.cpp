@@ -12,6 +12,13 @@ UEnemyAnim::UEnemyAnim()
 	{
 		NearAttackMontage = NAM.Object;
 	}
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> FAM(TEXT("/Script/Engine.AnimMontage'/Game/Animations/AM_FarAttack.AM_FarAttack'"));
+	if (FAM.Succeeded())
+	{
+		//UE_LOG(LogTemp, Log, TEXT("FarAttack Init"));
+		FarAttackMontage = FAM.Object;
+	}
 }
 
 void UEnemyAnim::NativeBeginPlay()
@@ -51,6 +58,18 @@ void UEnemyAnim::PlayNearAttackMontage()
 		if (!IsAnyMontagePlaying())
 		{
 			Montage_Play(NearAttackMontage);
+		}
+	}
+}
+
+void UEnemyAnim::PlayFarAttackMontage()
+{
+	if (IsValid(Character))
+	{
+		if (!IsAnyMontagePlaying())
+		{
+			//UE_LOG(LogTemp, Log, TEXT("FarAttack"));
+			Montage_Play(FarAttackMontage);
 		}
 	}
 }

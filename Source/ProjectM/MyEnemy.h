@@ -34,6 +34,7 @@ public:
 
 	void SetAttackTarget(AActor* target);
 	void NearAttack();
+	void FarAttack();
 
 	virtual float TakeDamage
 	(

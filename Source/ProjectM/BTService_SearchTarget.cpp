@@ -22,7 +22,7 @@ void UBTService_SearchTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8*
 	if (IsValid(CurPawn))
 	{
 		FVector Center = CurPawn->GetActorLocation();
-		float SearchDistance = 500.f;
+		float SearchDistance = 1500.f;
 
 		TArray<FOverlapResult> OverlapResult;
 

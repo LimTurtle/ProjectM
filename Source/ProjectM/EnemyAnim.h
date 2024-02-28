@@ -29,4 +29,5 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds);
 
 	void PlayNearAttackMontage();
+	void PlayFarAttackMontage();
 };
