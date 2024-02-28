@@ -31,4 +31,6 @@ protected:
 public:
 	virtual void NativeBeginPlay();
 	virtual void NativeUpdateAnimation(float DeltaSeconds);
+
+	UCharacterMovementComponent* GetMovement();
 };

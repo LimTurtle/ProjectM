@@ -47,7 +47,7 @@ void UPlayerAnim::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
 
-	if (IsValid(Character))
+	if (IsValid(Character) && !IsDead)
 	{
 		LookRotation = UKismetMathLibrary::FindLookAtRotation(Character->GetCapsuleComponent()->GetComponentLocation(), Character->GetMousePoint());
 		FRotator CharacterRotation = Character->GetActorRotation();

@@ -182,6 +182,7 @@ void AMyPlayer::CreatureDead()
 	if (IsValid(AnimIns))
 	{
 		AnimIns->PlayDeadMontage();
+		AnimIns->GetMovement()->DisableMovement();
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]() {Destroy(); }, 2.f, false);
 	}

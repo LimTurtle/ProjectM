@@ -19,6 +19,12 @@ UEnemyAnim::UEnemyAnim()
 		//UE_LOG(LogTemp, Log, TEXT("FarAttack Init"));
 		FarAttackMontage = FAM.Object;
 	}
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage> DM(TEXT("/Script/Engine.AnimMontage'/Game/Animations/AM_Dead.AM_Dead'"));
+	if (DM.Succeeded())
+	{
+		DeadMontage = DM.Object;
+	}
 }
 
 void UEnemyAnim::NativeBeginPlay()
@@ -71,5 +77,15 @@ void UEnemyAnim::PlayFarAttackMontage()
 			//UE_LOG(LogTemp, Log, TEXT("FarAttack"));
 			Montage_Play(FarAttackMontage);
 		}
+	}
+}
+
+void UEnemyAnim::PlayDeadMontage()
+{
+	if (IsValid(DeadMontage) && IsDead == false)
+	{
+		IsDead = true;
+		DeadMontage->bEnableAutoBlendOut = false;
+		float LastFrame = Montage_Play(DeadMontage);
 	}
 }

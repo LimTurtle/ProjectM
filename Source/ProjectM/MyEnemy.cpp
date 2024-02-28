@@ -47,6 +47,7 @@ AMyEnemy::AMyEnemy()
 		FireStorm = (UClass*)FS.Object->GeneratedClass;
 	}
 
+	OnDead.AddUObject(this, &AMyEnemy::CreatureDead);
 }
 
 void AMyEnemy::BeginPlay()
@@ -71,6 +72,7 @@ void AMyEnemy::BeginPlay()
 		HpBar = Cast<UHpBarWidget>(Gamemode->CurrentWidget);
 		if (HpBar)
 		{
+			Hp = 20.f;
 			HpBar->BindEnemyHp(this);
 		}
 	}
@@ -118,7 +120,23 @@ void AMyEnemy::FarAttack()
 float AMyEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	Hp = Hp - DamageAmount;
-	if (Hp < 0.f) Hp = 0.f;
+	if (Hp <= 0.f)
+	{
+		Hp = 0.f;
+		OnDead.Broadcast();
+	}
 	OnEnemyHpChanged.Broadcast();
 	return DamageAmount;
+}
+
+void AMyEnemy::CreatureDead()
+{
+	if (IsValid(AnimIns))
+	{
+		AnimIns->PlayDeadMontage();
+		auto EnemyAI = Cast<AEnemyAIController>(GetController());
+		EnemyAI->OnUnPossess();
+		FTimerHandle TimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]() {Destroy(); }, 2.f, false);
+	}
 }

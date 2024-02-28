@@ -27,3 +27,8 @@ void UCreatureAnim::NativeUpdateAnimation(float DeltaSeconds)
 	}
 
 }
+
+UCharacterMovementComponent* UCreatureAnim::GetMovement()
+{
+	return Movement;
+}

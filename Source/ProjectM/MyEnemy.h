@@ -43,6 +43,7 @@ public:
 		class AController* EventInstigator,
 		AActor* DamageCauser
 	) override;
+	void CreatureDead();
 
 	FOnEnemyHpChanged OnEnemyHpChanged;
 };

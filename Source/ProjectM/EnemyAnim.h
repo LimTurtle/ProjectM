@@ -21,6 +21,8 @@ private:
 	UAnimMontage* NearAttackMontage;
 	UPROPERTY(Category = "Animation", VisibleAnywhere)
 	UAnimMontage* FarAttackMontage;
+	UPROPERTY(Category = "Animation", VisibleAnywhere)
+	UAnimMontage* DeadMontage;
 
 public:
 	UEnemyAnim();
@@ -30,4 +32,5 @@ public:
 
 	void PlayNearAttackMontage();
 	void PlayFarAttackMontage();
+	void PlayDeadMontage();
 };
