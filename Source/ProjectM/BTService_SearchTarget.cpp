@@ -42,7 +42,7 @@ void UBTService_SearchTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8*
 				if (IsValid(Target))
 				{
 					//UE_LOG(LogTemp, Log, TEXT("%f / %f"), Target->GetActorLocation().X, Target->GetActorLocation().Y);
-					DrawDebugSphere(GetWorld(), Center, SearchDistance, 10, FColor::Green);
+					//DrawDebugSphere(GetWorld(), Center, SearchDistance, 10, FColor::Green);
 					OwnerComp.GetBlackboardComponent()->SetValueAsObject(FName("Target"), Target);
 					auto curCharacter = Cast<AMyEnemy>(CurPawn);
 					curCharacter->SetAttackTarget(Target);
@@ -50,7 +50,7 @@ void UBTService_SearchTarget::TickNode(UBehaviorTreeComponent& OwnerComp, uint8*
 				}
 				else
 				{
-					DrawDebugSphere(GetWorld(), Center, SearchDistance, 10, FColor::Red);
+					//DrawDebugSphere(GetWorld(), Center, SearchDistance, 10, FColor::Red);
 				}
 			}
 		}

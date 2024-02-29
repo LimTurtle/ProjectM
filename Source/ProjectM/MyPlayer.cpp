@@ -82,7 +82,6 @@ void AMyPlayer::BeginPlay()
 		HpBar = Cast<UHpBarWidget>(Gamemode->CurrentWidget);
 		if (HpBar)
 		{
-			Hp = 20.f;
 			HpBar->BindPlayerHp(this);
 		}
 	}

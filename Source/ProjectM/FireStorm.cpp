@@ -4,7 +4,9 @@
 #include "FireStorm.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/SceneComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "MyPlayer.h"
 #include "Particles/ParticleSystem.h"
 #include "Particles/ParticleSystemComponent.h"
 
@@ -62,6 +64,16 @@ void AFireStorm::OnOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* Oth
 	if (OtherActor && OtherActor != this && OtherComp)
 	{
 		CapsuleComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		auto OtherCharacter = Cast<AMyPlayer>(OtherActor);
+		if (IsValid(OtherCharacter))
+		{
+			auto CharacterMovement = OtherCharacter->GetCharacterMovement();
+			if (CharacterMovement)
+			{
+				//UE_LOG(LogTemp, Log, TEXT("Knockback"));
+				CharacterMovement->AddImpulse(FVector(0.f, 0.f, 1000.f), true);
+			}
+		}
 		//UE_LOG(LogTemp, Log, TEXT("OverlapBegin"));
 		UGameplayStatics::ApplyDamage(OtherActor, 10.f, nullptr, nullptr, NULL);
 	}
