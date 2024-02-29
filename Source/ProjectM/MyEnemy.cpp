@@ -72,6 +72,7 @@ void AMyEnemy::BeginPlay()
 		HpBar = Cast<UHpBarWidget>(Gamemode->CurrentWidget);
 		if (HpBar)
 		{
+			Hp = 20.f;
 			HpBar->BindEnemyHp(this);
 		}
 	}
@@ -135,7 +136,10 @@ void AMyEnemy::CreatureDead()
 		AnimIns->PlayDeadMontage();
 		auto EnemyAI = Cast<AEnemyAIController>(GetController());
 		EnemyAI->OnUnPossess();
-		FTimerHandle TimerHandle;
-		GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]() {Destroy(); }, 2.f, false);
+		UGameplayStatics::OpenLevel(this, TEXT("GameMenu"));
+		//FTimerHandle TimerHandle;
+		//GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]() {UGameplayStatics::OpenLevel(this, TEXT("GameMenu")); }, 2.f, false);
+		//GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]() {Destroy(); }, 3.f, false);
+		
 	}
 }
