@@ -41,11 +41,11 @@ AMyEnemy::AMyEnemy()
 
 	AIControllerClass = AEnemyAIController::StaticClass();
 
-	static ConstructorHelpers::FObjectFinder<UBlueprint> FS(TEXT("/Script/Engine.Blueprint'/Game/Blueprints/BP_FireStorm.BP_FireStorm'"));
-	if (FS.Succeeded())
-	{
-		FireStorm = (UClass*)FS.Object->GeneratedClass;
-	}
+	//static ConstructorHelpers::FObjectFinder<UBlueprint> FS(TEXT("/Script/Engine.Blueprint'/Game/Blueprints/BP_FireStorm.BP_FireStorm'"));
+	//if (FS.Succeeded())
+	//{
+	//	FireStorm = (UClass*)FS.Object->GeneratedClass;
+	//}
 
 	OnDead.AddUObject(this, &AMyEnemy::CreatureDead);
 }
@@ -92,7 +92,7 @@ void AMyEnemy::NearAttack()
 		{
 			FVector TargetLoc = AttackTarget->GetActorLocation();
 			TargetLoc.Z = 0.f;
-			GetWorld()->SpawnActor<AFireStorm>(FireStorm, TargetLoc, FRotator::ZeroRotator);
+			GetWorld()->SpawnActor<AFireStorm>(AFireStorm::StaticClass(), TargetLoc, FRotator::ZeroRotator);
 			//UE_LOG(LogTemp, Log, TEXT("%f / %f"), TargetLoc.X, TargetLoc.Y);
 			//GetWorld()->SpawnActor<AFireStorm>(AFireStorm::StaticClass(), AttackTarget->GetActorLocation(), FRotator::ZeroRotator);
 		}

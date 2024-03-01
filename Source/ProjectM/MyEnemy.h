@@ -22,8 +22,8 @@ private:
 	class UEnemyAnim* AnimIns;
 	UPROPERTY(VisibleAnywhere)
 	AActor* AttackTarget;
-	UPROPERTY(VisibleAnywhere)
-	UClass* FireStorm;
+	//UPROPERTY(VisibleAnywhere)
+	//UClass* FireStorm;
 	UPROPERTY(VisibleAnywhere)
 	class UHpBarWidget* HpBar;
 

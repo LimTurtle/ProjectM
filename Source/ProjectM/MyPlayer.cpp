@@ -31,20 +31,12 @@ AMyPlayer::AMyPlayer()
 		GetMesh()->SetRelativeLocationAndRotation(FVector(0.f, 0.f, -90.f), FRotator(0.f, -90.f, 0.f));
 	}
 
-	//RootComponent = SceneComp;
-
-	GetCapsuleComponent()->SetupAttachment(RootComponent);
+	RootComponent = GetCapsuleComponent();
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	//SpringArm->SetupAttachment(RootComponent);
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
-
-	//SpringArm->TargetArmLength = 800.f;
-	//SpringArm->SocketOffset = FVector(0.f, -200.f, 800.f);
-
-	//Camera->SetRelativeRotation(FRotator(0.f, -60.f, 0.f));
 
 	SpringArm->SetRelativeLocation(FVector(0.f, 0.f, 1200.f));
 

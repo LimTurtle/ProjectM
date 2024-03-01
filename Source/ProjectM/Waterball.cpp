@@ -17,11 +17,17 @@ AWaterball::AWaterball()
 	PrimaryActorTick.bCanEverTick = true;
 
 	DefaultRoot = CreateDefaultSubobject<USceneComponent>(TEXT("RootComp"));
-	RootComponent = DefaultRoot;
-	RootComponent->SetRelativeScale3D(FVector(1.f, 1.f, 1.f));
+	//RootComponent = DefaultRoot;
+	DefaultRoot->SetRelativeScale3D(FVector(1.f, 1.f, 1.f));
+
+	CollisionMesh = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComp"));
+	CollisionMesh->SetupAttachment(DefaultRoot);
+	CollisionMesh->SetGenerateOverlapEvents(true);
+	CollisionMesh->OnComponentBeginOverlap.AddDynamic(this, &AWaterball::OnOverlapBegin);
+	CollisionMesh->SetRelativeScale3D(FVector(2.f, 2.f, 2.f));
 
 	ParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleSystem"));
-	ParticleSystem->SetupAttachment(RootComponent);
+	ParticleSystem->SetupAttachment(DefaultRoot);
 
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> PS(TEXT("/Script/Engine.ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_waterBall.P_ky_waterBall'"));
 
@@ -29,12 +35,6 @@ AWaterball::AWaterball()
 	{
 		ParticleSystem->SetTemplate(PS.Object);
 	}
-
-	CollisionMesh = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComp"));
-	CollisionMesh->SetupAttachment(RootComponent);
-	CollisionMesh->SetGenerateOverlapEvents(true);
-	CollisionMesh->OnComponentBeginOverlap.AddDynamic(this, &AWaterball::OnOverlapBegin);
-	CollisionMesh->SetRelativeScale3D(FVector(2.f, 2.f, 2.f));
 
 	ProjectileComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
 	ProjectileComponent->SetUpdatedComponent(RootComponent);

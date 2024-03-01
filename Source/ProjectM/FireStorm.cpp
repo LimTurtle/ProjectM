@@ -19,11 +19,19 @@ AFireStorm::AFireStorm()
 	PrimaryActorTick.bCanEverTick = true;
 
 	DefaultRoot = CreateDefaultSubobject<USceneComponent>(TEXT("RootComp"));
-	RootComponent = DefaultRoot;
-	RootComponent->SetRelativeScale3D(FVector(0.5f, 0.5f, 0.5f));
+	//RootComponent = DefaultRoot;
+	DefaultRoot->SetRelativeScale3D(FVector(0.5f, 0.5f, 0.5f));
+
+	CapsuleComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComp"));
+	CapsuleComp->SetupAttachment(DefaultRoot);
+	CapsuleComp->SetRelativeLocation(FVector(0.f, 0.f, 240.f));
+	CapsuleComp->SetRelativeScale3D(FVector(1.f, 1.f, 1.f));
+	CapsuleComp->SetGenerateOverlapEvents(true);
+	CapsuleComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	CapsuleComp->OnComponentBeginOverlap.AddDynamic(this, &AFireStorm::OnOverlapBegin);
 
 	ParticleSystem = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleSystem"));
-	ParticleSystem->SetupAttachment(RootComponent);
+	ParticleSystem->SetupAttachment(DefaultRoot);
 
 	static ConstructorHelpers::FObjectFinder<UParticleSystem> PS(TEXT("/Script/Engine.ParticleSystem'/Game/FXVarietyPack/Particles/P_ky_fireStorm.P_ky_fireStorm'"));
 
@@ -31,16 +39,7 @@ AFireStorm::AFireStorm()
 	{
 		ParticleSystem->SetTemplate(PS.Object);
 	}
-
-	CapsuleComp = CreateDefaultSubobject<UCapsuleComponent>(TEXT("CapsuleComp"));
-	CapsuleComp->SetupAttachment(RootComponent);
-	CapsuleComp->SetRelativeLocation(FVector(0.f, 0.f, 240.f));
-	//CapsuleComp->SetRelativeScale3D(FVector(4.25f, 4.25f, 6.25f));
-	CapsuleComp->SetRelativeScale3D(FVector(1.f, 1.f, 1.f));
-	CapsuleComp->SetGenerateOverlapEvents(true);
-	CapsuleComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	CapsuleComp->OnComponentBeginOverlap.AddDynamic(this, &AFireStorm::OnOverlapBegin);
-	
+	UE_LOG(LogTemp, Log, TEXT("Spawn FireStorm"));
 }
 
 // Called when the game starts or when spawned
@@ -48,8 +47,12 @@ void AFireStorm::BeginPlay()
 {
 	Super::BeginPlay();
 
-	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]() {ActorActive(); }, .5f, false);
+	FTimerHandle TimerHandle1;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle1, [&]() {AFireStorm::ActorActive(); }, .5f, false);
+	FTimerHandle TimerHandle2;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle2, [&]() {ParticleSystem->Deactivate(); }, 2.f, false);
+	FTimerHandle TimerHandle3;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle3, [&]() {Destroy(); }, 4.f, false);
 }
 
 // Called every frame
@@ -84,6 +87,7 @@ void AFireStorm::ActorActive()
 	CapsuleComp->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	SetActorHiddenInGame(false);
 	ParticleSystem->Activate();
+	UE_LOG(LogTemp, Log, TEXT("Active Particle"));
 }
 
 
