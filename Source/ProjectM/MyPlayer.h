@@ -42,6 +42,7 @@ public:
 	void MouseRightLeft(float value);
 
 	void Attack();
+	void SaveHp();
 	void CreatureDead();
 	virtual float TakeDamage
 	(

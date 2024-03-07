@@ -16,6 +16,7 @@
 #include "MyGameModeBase.h"
 #include "HpBarWidget.h"
 #include "PlayerAnim.h"
+#include "PlayerSaveGame.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Weapon.h"
 
@@ -49,6 +50,12 @@ AMyPlayer::AMyPlayer()
 	}
 
 	OnDead.AddUObject(this, &AMyPlayer::CreatureDead);
+
+	auto SavedData = Cast<UPlayerSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("PlayerHp"), 0));
+	if (SavedData != nullptr)
+	{
+		Hp = SavedData->Hp;
+	}
 }
 
 void AMyPlayer::BeginPlay()
@@ -89,7 +96,7 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	//PlayerInputComponent->BindAxis(TEXT("MouseUpDown"), this, &AMyPlayer::MouseUpDown);
 	//PlayerInputComponent->BindAxis(TEXT("MouseRightLeft"), this, &AMyPlayer::MouseRightLeft);
 	PlayerInputComponent->BindAction(TEXT("Attack"), IE_Pressed, this, &AMyPlayer::Attack);
-
+	PlayerInputComponent->BindAction(TEXT("Save"), IE_Pressed, this, &AMyPlayer::SaveHp);
 }
 
 void AMyPlayer::Tick(float DeltaTime)
@@ -166,6 +173,14 @@ void AMyPlayer::Attack()
 			GetCapsuleComponent()->GetComponentLocation() + (GetCapsuleComponent()->GetForwardVector()) * 100.f,
 			GetCapsuleComponent()->GetComponentRotation());
 	}
+}
+
+void AMyPlayer::SaveHp()
+{
+	auto PlayerData = NewObject<UPlayerSaveGame>();
+	PlayerData->Hp = Hp;
+	UE_LOG(LogTemp, Log, TEXT("Saved Hp: %f"), PlayerData->Hp);
+	UGameplayStatics::SaveGameToSlot(PlayerData, TEXT("PlayerHp"), 0);
 }
 
 void AMyPlayer::CreatureDead()
